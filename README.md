@@ -8,6 +8,16 @@ A simple App made with Flutter which has features :
 - Share Image on social media
 - Pull to refresh
 
+Library used:
+- Provider for State Management
+- Share_plus
+- Permission_handler
+- http
+- image_gallery_saver
+- pull_to_refresh
+- screenshot
+- image_picker
+- path_provider
 
 Image from  https://imgflip.com/api
 
