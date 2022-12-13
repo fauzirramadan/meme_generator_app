@@ -7,3 +7,13 @@ Widget get loadingView => const Center(
             color: Colors.black,
           )),
     );
+
+var myAppBar = AppBar(
+  elevation: 0,
+  backgroundColor: Colors.grey[400],
+  centerTitle: true,
+  title: const Text(
+    "MimGenerator",
+    style: TextStyle(color: Colors.black),
+  ),
+);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meme_generator_app/provider/meme_provider.dart';
-import 'package:meme_generator_app/utils/loading_view.dart';
+import 'package:meme_generator_app/utils/nav_utils.dart';
+import 'package:meme_generator_app/utils/widgets.dart';
+import 'package:meme_generator_app/view/detail.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import '../network/response/res_get_meme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,15 +22,7 @@ class _HomePageState extends State<HomePage> {
     return ChangeNotifierProvider(
       create: (context) => MemeProvider(),
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: const Text(
-            "MimGenerator",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
+        appBar: myAppBar,
         body: Consumer<MemeProvider>(builder: (context, bloc, _) {
           return bloc.isLoading
               ? loadingView
@@ -55,7 +47,8 @@ class _HomePageState extends State<HomePage> {
                               mainAxisSpacing: 2.5),
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () => Nav.to(DetailPage(
+                              imageUrl: "${bloc.listMeme[index].url}")),
                           child: Card(
                             child: Center(
                               child: Image.network(
