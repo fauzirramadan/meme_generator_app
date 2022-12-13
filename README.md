@@ -1,4 +1,4 @@
-# meme_generator_app
+# Meme_generator_app
 
 Meme Generator App.
 
@@ -22,6 +22,9 @@ Library used:
 Image from  https://imgflip.com/api
 
 ## Preview
+https://user-images.githubusercontent.com/91587840/207379418-3cb856a4-0267-41fd-a13f-da2476d66e70.mp4
+
+https://user-images.githubusercontent.com/91587840/207379439-bac9974f-8649-4c7d-9423-9a4183151eb0.mp4
 
 ![ss6](https://user-images.githubusercontent.com/91587840/207363346-74707e77-949a-4bb5-9185-c9ec76320575.png)
 ![ss5](https://user-images.githubusercontent.com/91587840/207363357-f6be0018-0ecf-4ecb-85a7-56c054c72a4a.png)
