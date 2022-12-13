@@ -24,47 +24,42 @@ class DetailPage extends StatelessWidget {
               Visibility(
                 visible: bloc.isEditMode,
                 child: TextButton(
-                  onPressed: () => bloc.editDone(),
-                  child: const Text("Done"),
+                  onPressed: () =>
+                      bloc.editDone(context, memeImage(bloc, context)),
+                  child: const Text(
+                    "Generate Meme",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Stack(clipBehavior: Clip.none, children: [
-                Image.network(imageUrl),
-                bloc.myLogo != null
-                    ? Positioned(
-                        top: 10,
-                        left: MediaQuery.of(context).size.width / 5,
-                        child: SizedBox(
-                          height: 100,
-                          child: Image.file(
-                            File(bloc.myLogo!.path),
-                          ),
-                        ),
-                      )
-                    : const SizedBox()
-              ]),
+              memeImage(bloc, context),
               Visibility(
-                  visible: bloc.isEditText,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          hintText: "Input Text Here"),
-                    ),
-                  ))
+                visible: bloc.isEditText,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: TextField(
+                    controller: bloc.textController,
+                    onChanged: (val) => bloc.addText(val),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        hintText: "Input Text Here"),
+                  ),
+                ),
+              )
             ],
           ),
           bottomNavigationBar:
               Consumer<GeneratorProvider>(builder: (context, bloc, _) {
             return Container(
               height: 110,
-              color: Colors.grey,
               padding: const EdgeInsets.only(bottom: 20.0, left: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -89,6 +84,34 @@ class DetailPage extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Stack memeImage(GeneratorProvider bloc, BuildContext context) {
+    return Stack(clipBehavior: Clip.none, children: [
+      Image.network(imageUrl),
+      bloc.myLogo != null
+          ? Positioned(
+              top: 10,
+              left: MediaQuery.of(context).size.width / 5,
+              child: SizedBox(
+                height: 100,
+                child: ClipOval(
+                  child: Image.file(
+                    File(bloc.myLogo!.path),
+                  ),
+                ),
+              ),
+            )
+          : const SizedBox(),
+      Positioned(
+          top: 10,
+          left: MediaQuery.of(context).size.width / 2.3,
+          child: Text(
+            bloc.textController.text,
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 30),
+          ))
+    ]);
   }
 
   Future<dynamic> myBottomSheet(BuildContext context, GeneratorProvider bloc) {
