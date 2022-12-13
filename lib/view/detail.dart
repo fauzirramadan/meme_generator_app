@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:meme_generator_app/provider/generator_provider.dart';
 import 'package:meme_generator_app/utils/widgets.dart';
@@ -17,10 +19,33 @@ class DetailPage extends StatelessWidget {
           body: ListView(
             children: [
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
-              Stack(
-                  clipBehavior: Clip.none, children: [Image.network(imageUrl)]),
+              Visibility(
+                visible: bloc.isEditMode,
+                child: TextButton(
+                  onPressed: () => bloc.editDone(),
+                  child: const Text("Done"),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Stack(clipBehavior: Clip.none, children: [
+                Image.network(imageUrl),
+                bloc.myLogo != null
+                    ? Positioned(
+                        top: 10,
+                        left: MediaQuery.of(context).size.width / 5,
+                        child: SizedBox(
+                          height: 100,
+                          child: Image.file(
+                            File(bloc.myLogo!.path),
+                          ),
+                        ),
+                      )
+                    : const SizedBox()
+              ]),
               Visibility(
                   visible: bloc.isEditText,
                   child: Padding(
@@ -35,28 +60,69 @@ class DetailPage extends StatelessWidget {
                   ))
             ],
           ),
-          bottomNavigationBar: Container(
-            height: 120,
-            color: Colors.grey,
-            padding: const EdgeInsets.only(bottom: 20.0, left: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                attributButton(
-                    title: "Add Logo", icon: Icons.image, onTap: null),
-                const SizedBox(
-                  width: 18,
-                ),
-                attributButton(
-                    title: "Add Text",
-                    icon: Icons.text_fields,
-                    onTap: () => bloc.editTextVisibilty())
-              ],
-            ),
-          ),
+          bottomNavigationBar:
+              Consumer<GeneratorProvider>(builder: (context, bloc, _) {
+            return Container(
+              height: 110,
+              color: Colors.grey,
+              padding: const EdgeInsets.only(bottom: 20.0, left: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  attributButton(
+                      title: "Add Logo",
+                      icon: Icons.image,
+                      onTap: () {
+                        myBottomSheet(context, bloc);
+                      }),
+                  const SizedBox(
+                    width: 18,
+                  ),
+                  attributButton(
+                      title: "Add Text",
+                      icon: Icons.text_fields,
+                      onTap: () => bloc.editTextVisibilty())
+                ],
+              ),
+            );
+          }),
         );
       }),
     );
+  }
+
+  Future<dynamic> myBottomSheet(BuildContext context, GeneratorProvider bloc) {
+    return showModalBottomSheet(
+        backgroundColor: Colors.grey[200],
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        context: context,
+        builder: (_) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ListTile(
+                    onTap: () => bloc.addLogo(isFromGallery: false),
+                    title: const Text("Camera"),
+                    trailing: const Icon(Icons.camera),
+                  ),
+                  ListTile(
+                    onTap: () => bloc.addLogo(),
+                    title: const Text("Gallery"),
+                    trailing: const Icon(Icons.image),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
 
