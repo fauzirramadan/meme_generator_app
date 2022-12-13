@@ -2,6 +2,7 @@
     package="com.example.meme_generator_app">
     <uses-permission android:name="ANDROID.PERMISSION.READ_EXTERNAL_STORAGE"/>
 <uses-permission android:name="ANDROID.PERMISSION.WRITE_EXTERNAL_STORAGE"/>
+ <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="meme_generator_app"
         android:name="${applicationName}"
